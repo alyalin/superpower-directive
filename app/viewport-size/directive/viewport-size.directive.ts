@@ -9,7 +9,7 @@ import {
   EmbeddedViewRef
 } from "@angular/core";
 import { ReplaySubject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, share } from "rxjs/operators";
 import { ViewportSizeService } from "../service/viewport-size.service";
 import { ViewportType } from "../interfaces/viewport-type";
 
@@ -43,7 +43,7 @@ export class ViewportSizeDirective implements OnInit, OnDestroy {
 
   private showContentByViewport() {
     this.vpSizeService.currentViewportType$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$), share())
       .subscribe(type => {
         if (type === this.viewportSize) {
           this.viewContainer.insert(this.view);
